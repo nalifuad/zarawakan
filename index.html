@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>shewazarakan</title> <!-- Correct app name -->
-  <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shewazarakan</title> <!-- Correct app name -->
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <h1>Welcome to shewazarakan!</h1> <!-- Corrected heading -->
+    <h1>Welcome to shewazarakan!</h1> <!-- Updated welcome text -->
 
-  <!-- Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker
-          .register('/service-worker.js')
-          .then(function(registration) {
-            console.log('Service Worker registered with scope: ', registration.scope);
-          })
-          .catch(function(error) {
-            console.log('Service Worker registration failed: ', error);
-          });
-      });
-    }
-  </script>
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered with scope: ', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed: ', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
