@@ -1,22 +1,20 @@
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open('v1').then((cache) => {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/manifest.json',
-        '/styles.css',  // Add this only if you have a styles.css file
-        '/icon.png',
-        '/icon-512.png'
-      ]);
-    })
-  );
+    event.waitUntil(
+        caches.open('my-cache').then((cache) => {
+            return cache.addAll([
+                '/index.html',
+                '/manifest.json',
+                '/service-worker.js',
+                '/icon.png', // Add other assets you want to cache here
+            ]);
+        })
+    );
 });
 
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || fetch(event.request);
+        })
+    );
 });
