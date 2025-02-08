@@ -2,6 +2,38 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #ff7f00;
-    color: white;
+    color: #fff;
     text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2em;
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 1em;
+    width: 80%;
+    margin: 20px 0;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #008000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #006400;
+}
+
+#output {
+    margin-top: 20px;
+    font-size: 1.5em;
 }
