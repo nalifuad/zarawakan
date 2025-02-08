@@ -1,20 +1,22 @@
-self.addEventListener('install', (event) => {
+self.addEventListener('install', function(event) {
     event.waitUntil(
-        caches.open('my-cache').then((cache) => {
+        caches.open('app-cache').then(function(cache) {
             return cache.addAll([
+                '/',
                 '/index.html',
-                '/manifest.json',
-                '/service-worker.js',
-                '/icon.png', // Add other assets you want to cache here
+                '/icon.png',
+                '/icon-512.png',
+                '/styles.css',
+                '/app.js',
             ]);
         })
     );
 });
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', function(event) {
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
-            return cachedResponse || fetch(event.request);
+        caches.match(event.request).then(function(response) {
+            return response || fetch(event.request);
         })
     );
 });
