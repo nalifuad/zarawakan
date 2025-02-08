@@ -1,53 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ku">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>زاراوەکانی کوردی</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icon.png" type="image/png">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #ff7f00;
-      color: white;
-      padding: 20px;
-    }
-    input {
-      padding: 10px;
-      width: 300px;
-      font-size: 16px;
-    }
-    button {
-      padding: 10px;
-      font-size: 16px;
-      background-color: #008000;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #006400;
-    }
-    #translations {
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>زاراوەکانی کوردی</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        input {
+            width: 80%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        #output {
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 80%;
+            margin-top: 20px;
+        }
+        #output div {
+            padding: 15px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
-  <h1>Welcome to the Kurdish Translation App</h1>
 
-  <input type="text" id="input-text" placeholder="Enter word to translate">
-  <button id="translate-btn">Translate</button>
+    <div>
+        <input type="text" id="searchInput" placeholder="گەڕان..." />
+        <button id="searchButton">گەڕان</button>
+    </div>
 
-  <div id="translations">
-    <p><strong>سۆرانی:</strong> <span id="sorani-text">Enter text to translate</span></p>
-    <p><strong>بادینی:</strong> <span id="badini-text">Translated text will appear here</span></p>
-    <p><strong>هەورامی:</strong> <span id="hawrami-text">Translated text will appear here</span></p>
-  </div>
+    <div id="output">
+        <h3>ئەنجامی گەڕان:</h3>
+        <div id="outputContainer"></div>
+    </div>
 
-  <script src="app.js"></script>
+    <script>
+        let airtableData = [];
+
+        fetch('https://api.airtable.com/v0/appPMRn6taSjy5Cuw/database2', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer patZmLxJKMbZNydLd.065cf2139f1bca7b1023308c02d5e016b71bab0c06999fef72b14253be8fb24b',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.records && data.records.length > 0) {
+                airtableData = data.records;
+            } else {
+                document.getElementById('outputContainer').innerHTML = "هیچ ئەنجامێك نەدۆزرایەوە.";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('outputContainer').innerHTML = "هەڵەیەک ڕویدا لە کاتی وەرگرتنی داتاکان.";
+        });
+
+        function displayData(data, searchTerm) {
+            let outputHTML = '';
+            data.forEach(record => {
+                let topColumn = '';
+                let otherColumns = '';
+
+                if (record.fields["بادینی"] && record.fields["بادینی"].toLowerCase().includes(searchTerm)) {
+                    topColumn = `<span style="font-size: 20px; color: #4CAF50;">${record.fields["بادینی"]}</span><br><br>`;
+                    otherColumns = `
+                        <strong>سۆرانی:</strong> ${record.fields["سۆرانی"]}<br>
+                        <strong>هەورامی:</strong> ${record.fields["هەورامی"]}<br>
+                    `;
+                } else if (record.fields["سۆرانی"] && record.fields["سۆرانی"].toLowerCase().includes(searchTerm)) {
+                    topColumn = `<span style="font-size: 20px; color: #4CAF50;">${record.fields["سۆرانی"]}</span><br><br>`;
+                    otherColumns = `
+                        <strong>بادینی:</strong> ${record.fields["بادینی"]}<br>
+                        <strong>هەورامی:</strong> ${record.fields["هەورامی"]}<br>
+                    `;
+                } else if (record.fields["هەورامی"] && record.fields["هەورامی"].toLowerCase().includes(searchTerm)) {
+                    topColumn = `<span style="font-size: 20px; color: #4CAF50;">${record.fields["هەورامی"]}</span><br><br>`;
+                    otherColumns = `
+                        <strong>سۆرانی:</strong> ${record.fields["سۆرانی"]}<br>
+                        <strong>بادینی:</strong> ${record.fields["بادینی"]}<br>
+                    `;
+                }
+
+                outputHTML += `
+                    <div>
+                        <strong>ئەنجامەکان:</strong><br>
+                        ${topColumn}
+                        ${otherColumns}
+                    </div>`;
+            });
+
+            document.getElementById('outputContainer').innerHTML = outputHTML;
+        }
+
+        function searchData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = airtableData.filter(record => {
+                return Object.values(record.fields).some(fieldValue => fieldValue.toString().toLowerCase().includes(searchTerm));
+            });
+
+            if (filteredData.length > 0) {
+                displayData(filteredData, searchTerm);
+            } else {
+                document.getElementById('outputContainer').innerHTML = "هیچ ئەنجامێك نەدۆزرایەوە.";
+            }
+        }
+
+        document.getElementById('searchButton').addEventListener('click', searchData);
+    </script>
 </body>
 </html>
