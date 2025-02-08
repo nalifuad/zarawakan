@@ -2,7 +2,7 @@
   "name": "زاراوەکانی کوردی",
   "short_name": "زاراوەکان",
   "description": "A Kurdish translation app for different dialects.",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ff7f00",
   "theme_color": "#008000",
