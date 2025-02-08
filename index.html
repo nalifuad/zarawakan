@@ -1,29 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ku">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>زاراوەکانی کوردی</title>
-    <link rel="icon" href="icon.png" type="image/png">
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" type="image/png">
     <style>
-        /* Add the styles from styles.css file here (if needed) */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #searchInput, #searchButton {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #searchButton {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            margin-left: 10px;
+        }
+        #output {
+            margin-top: 20px;
+        }
+        .result {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .result span {
+            font-weight: bold;
+            color: #4CAF50;
+        }
     </style>
 </head>
 <body>
-    <!-- Create a search input and button -->
-    <div style="margin-bottom: 20px;">
-        <input type="text" id="searchInput" placeholder="گەڕان..." style="padding: 10px; width: 80%; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;">
-        <button id="searchButton" style="padding: 10px 15px; margin-left: 10px; font-size: 16px; cursor: pointer; background-color: #4CAF50; color: white; border: none; border-radius: 4px;">
-            گەڕان
-        </button>
+    <div class="container">
+        <h1>گەڕان و وەرگرتنی تەرجمە</h1>
+        <input type="text" id="searchInput" placeholder="گەڕان..." />
+        <button id="searchButton">گەڕان</button>
+        <div id="output"></div>
     </div>
 
-    <!-- Create an output container to display the fetched/filtered data -->
-    <div id="outputContainer" style="padding: 20px; background-color: #f0f0f0; border-radius: 8px; border: 1px solid #ccc;">
-        <h3>ئەنجامی گەڕان:</h3>
-    </div>
+    <script>
+        let airtableData = [];
+        const apiUrl = 'https://api.airtable.com/v0/appPMRn6taSjy5Cuw/database2'; // Airtable API URL with your base ID and table name
+        const apiKey = 'patZmLxJKMbZNydLd.065cf2139f1bca7b1023308c02d5e016b71bab0c06999fef72b14253be8fb24b'; // Your personal access token
 
-    <script src="app.js"></script> <!-- Link to your custom JavaScript file -->
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.records && data.records.length > 0) {
+                airtableData = data.records;
+            } else {
+                document.getElementById('output').innerText = "هیچ ئەنجامێك نەدۆزرایەوە.";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('output').innerText = "هەڵەیەک ڕویدا لە کاتی وەرگرتنی داتاکان.";
+        });
+
+        function displayData(data, searchTerm) {
+            let outputHTML = '';
+            data.forEach(record => {
+                let topColumn = '';
+                let otherColumns = '';
+
+                if (record.fields["بادینی"] && record.fields["بادینی"].toLowerCase().includes(searchTerm)) {
+                    topColumn = `<span>${record.fields["بادینی"]}</span><br><br>`;
+                    otherColumns = `
+                        <strong>سۆرانی:</strong> ${record.fields["سۆرانی"]}<br>
+                        <strong>هەورامی:</strong> ${record.fields["هەورامی"]}<br>
+                    `;
+                } else if (record.fields["سۆرانی"] && record.fields["سۆرانی"].toLowerCase().includes(searchTerm)) {
+                    topColumn = `<span>${record.fields["سۆرانی"]}</span><br><br>`;
+                    otherColumns = `
+                        <strong>بادینی:</strong> ${record.fields["بادینی"]}<br>
+                        <strong>هەورامی:</strong> ${record.fields["هەورامی"]}<br>
+                    `;
+                } else if (record.fields["هەورامی"] && record.fields["هەورامی"].toLowerCase().includes(searchTerm)) {
+                    topColumn = `<span>${record.fields["هەورامی"]}</span><br><br>`;
+                    otherColumns = `
+                        <strong>سۆرانی:</strong> ${record.fields["سۆرانی"]}<br>
+                        <strong>بادینی:</strong> ${record.fields["بادینی"]}<br>
+                    `;
+                }
+
+                outputHTML += `
+                    <div class="result">
+                        ${topColumn}
+                        ${otherColumns}
+                    </div>
+                `;
+            });
+            document.getElementById('output').innerHTML = outputHTML;
+        }
+
+        function searchData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = airtableData.filter(record => {
+                return Object.values(record.fields).some(fieldValue => fieldValue.toString().toLowerCase().includes(searchTerm));
+            });
+            if (filteredData.length > 0) {
+                displayData(filteredData, searchTerm);
+            } else {
+                document.getElementById('output').innerText = "هیچ ئەنجامێك نەدۆزرایەوە.";
+            }
+        }
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            searchData();
+        });
+    </script>
 </body>
 </html>
