@@ -1,31 +1,79 @@
+/* General page styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #fff;
-    color: #333;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
+/* Header styling */
+header {
+  background-color: #008000;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+/* Search input and button container */
+#searchInput, #searchButton {
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#searchButton {
+  margin-left: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Search results container */
 #outputContainer {
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
-button {
-    padding: 10px 15px;
-    margin-left: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
+#outputContainer h3 {
+  font-size: 24px;
 }
 
-input[type="text"] {
-    padding: 10px;
-    width: 80%;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+#output {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Styling for individual result blocks */
+div.result-item {
+  background-color: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+div.result-item span {
+  font-size: 20px;
+  color: #4CAF50;
+}
+
+strong {
+  color: #008000;
 }
