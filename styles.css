@@ -1,21 +1,33 @@
+/* Set the overall background color to white */
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #ff7f00;
-  color: #333;
-  margin: 0;
-  padding: 0;
+  background-color: white;
+  color: black;  /* Set text color to black to contrast with the white background */
 }
 
-h3 {
-  color: #4CAF50;
+/* You can style the search bar and output container further if needed */
+#searchInput, #searchButton {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
 }
 
-button {
-  cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
+#outputContainer {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}/* Set the overall background color to white */
+body {
+  background-color: white;
+  color: black;  /* Set text color to black to contrast with the white background */
 }
 
-#output {
-  margin-top: 20px;
+/* You can style the search bar and output container further if needed */
+#searchInput, #searchButton {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+#outputContainer {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
