@@ -3,25 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shewazarakan</title> <!-- Correct app name -->
+    <title>زاراوەکانی کوردی</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" sizes="192x192">
+    <link rel="icon" href="icon-512.png" sizes="512x512">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to shewazarakan!</h1> <!-- Updated welcome text -->
-
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(function(registration) {
-                        console.log('Service Worker registered with scope: ', registration.scope);
-                    })
-                    .catch(function(error) {
-                        console.log('Service Worker registration failed: ', error);
-                    });
-            });
-        }
-    </script>
+    <h1>Welcome to Shewazarakan</h1>
+    <script src="app.js"></script>
 </body>
 </html>
