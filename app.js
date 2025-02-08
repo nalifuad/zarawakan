@@ -1,40 +1,40 @@
-// Airtable API details
-const apiKey = 'بەستن'; // Your Airtable API Key
+// Your Airtable API setup
+const airtableToken = 'patChQMUnczMPuIv6.1daa01fa13b723ec1b299eec21f351f2eb077ce6407d2a13d3207d215ec78070';
 const baseId = 'appPMRn6taSjy5Cuw'; // Your Airtable Base ID
 const tableName = 'database2'; // Your Airtable Table Name
 
-const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
-
-// Fetch data from Airtable
-fetch(url, {
-    method: 'GET',
-    headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-    },
-})
-    .then((response) => response.json())
-    .then((data) => {
-        const records = data.records;
-        const container = document.getElementById('results');
-
-        records.forEach((record) => {
-            const inputText = record.fields['سۆرانی']; // Input text column
-            const outputTextOne = record.fields['بادینی']; // Output 1 column
-            const outputTextTwo = record.fields['هەورامی']; // Output 2 column
-
-            const div = document.createElement('div');
-            div.classList.add('result');
-
-            div.innerHTML = `
-                <h3>${inputText}</h3>
-                <p>Output 1: ${outputTextOne}</p>
-                <p>Output 2: ${outputTextTwo}</p>
-            `;
-
-            container.appendChild(div);
-        });
-    })
-    .catch((error) => {
-        console.error('Error fetching data:', error);
+// Function to fetch data from Airtable
+async function fetchData(inputText) {
+    const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
+    
+    const response = await fetch(url, {
+        headers: {
+            'Authorization': `Bearer ${airtableToken}`
+        }
     });
+
+    const data = await response.json();
+    const records = data.records;
+
+    // Check for a match in the input fields
+    const result = records.find(record =>
+        record.fields['سۆرانی'] === inputText ||
+        record.fields['بادینی'] === inputText ||
+        record.fields['هەورامی'] === inputText
+    );
+
+    if (result) {
+        return {
+            sorani: result.fields['سۆرانی'],
+            badini: result.fields['بادینی'],
+            hawrami: result.fields['هەورامی']
+        };
+    } else {
+        return { sorani: 'Not found', badini: 'Not found', hawrami: 'Not found' };
+    }
+}
+
+// Call the function with an example input
+fetchData('سۆرانی')
+    .then(result => console.log(result))
+    .catch(error => console.error('Error fetching data:', error));
