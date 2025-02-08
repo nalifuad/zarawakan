@@ -1,14 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>زاراوەکانی کوردی</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>زاراوەکانی کوردی</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #ff7f00;
+      color: white;
+      padding: 20px;
+    }
+    input {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #008000;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #006400;
+    }
+    #translations {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>زاراوەکانی کوردی</h1>
-    <div id="results"></div> <!-- This will display the results from Airtable -->
+  <h1>Welcome to the Kurdish Translation App</h1>
 
-    <script src="app.js"></script> <!-- Include the JavaScript file -->
+  <input type="text" id="input-text" placeholder="Enter word to translate">
+  <button id="translate-btn">Translate</button>
+
+  <div id="translations">
+    <p><strong>سۆرانی:</strong> <span id="sorani-text">Enter text to translate</span></p>
+    <p><strong>بادینی:</strong> <span id="badini-text">Translated text will appear here</span></p>
+    <p><strong>هەورامی:</strong> <span id="hawrami-text">Translated text will appear here</span></p>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
